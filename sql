@@ -43,15 +43,16 @@ async function createTodoTable(){
 
 
 //insert data
-async function insertUserData(){
-    const insertQuery = "INSERT INTO users (username, email, password) VALUES ('abhash29', 'abhashdas@gmail.com', '12345')";
-    const res = await client.query(insertQuery);
+async function insertUserData(username: string, email: string, password: string){
+    const insertQuery = "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)";
+    const values = [username, email, password];
+    const res = await client.query(insertQuery, values);
     console.log("Insertion successful");
 }
 
-async function insertTodaData(){
-    const insertQuery = "INSERT INTO todo (user_id, work, time, status) VALUES ('1', 'Eat', '10', 'true')";
+async function insertTodaData(user_id: Number, work: string, time: string, status: boolean){
+    const insertQuery = "INSERT INTO todo (user_id, work, time, status) VALUES ($1, $2, $3, $4)";
     const res = await client.query(insertQuery)
     console.log("Todo added");
 }
-insertTodaData();
+insertUserData("pranjal2", "pranjal@gmail.com", "123");
