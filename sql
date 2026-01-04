@@ -1,43 +1,57 @@
-//write a function to create a users table in your db
-import {Client} from "pg";
+//Connection string
+//Schema
+import {Client} from 'pg';
 
 const client = new Client({
-   connectionString : 'postgresql://neondb_owner:npg_RyfWg3snIB1w@ep-bitter-field-ahyale44-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+    connectionString: 'postgresql://neondb_owner:npg_gYrqOZa0uUt6@ep-calm-term-a4eqq827-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
 })
+await client.connect();
 
-
-/*async function createUserTable(){
-    await client.connect();
-    const result = await client.query(`
-        CREATE TABLE   users(
-            id SERIAL PRIMARY KEY,
-            username VARCHAR(50) UNIQUE NOT NULL,
-            email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP 
-        );
+//create the user table
+async function createUserTable(){
+        const result = await client.query( `
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                username VARCHAR(100) UNIQUE NOT NULL,
+                email VARCHAR(100) UNIQUE NOT NULL,
+                password VARCHAR(150) NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            );
         `)
-    console.log(result);
+        console.log("User table created");
 }
 
-createUserTable();
+
+//create the todo table
+async function createTodoTable(){
+    const result = await client.query(`
+      CREATE TABLE IF NOT EXISTS todo(
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER,
+        work VARCHAR(250) NOT NULL,
+        time VARCHAR(250) NOT NULL,
+        status BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      );
+        `)
+    console.log("Todo table created");
+}
+
+//await createUserTable();
+//await createTodoTable();
 
 
-//async function to insert data
-async function insertData(){
-    await client.connect();
-    const insertQuery = "INSERT INTO USERS (username, email, password) VALUES ('username2', 'abhash@gmail', 'Abhash@1234')";
+//insert data
+async function insertUserData(){
+    const insertQuery = "INSERT INTO users (username, email, password) VALUES ('abhash29', 'abhashdas@gmail.com', '12345')";
     const res = await client.query(insertQuery);
-    console.log("Inserstion success", res);
+    console.log("Insertion successful");
 }
-insertData();*/
 
-
-//async function to get all the users
-async function getUser(){
-    await client.connect();
-    const query = 'SELECT * FROM users';
-    const result = await client.query(query, []);
-    console.log(result);
+async function insertTodaData(){
+    const insertQuery = "INSERT INTO todo (user_id, work, time, status) VALUES ('1', 'Eat', '10', 'true')";
+    const res = await client.query(insertQuery)
+    console.log("Todo added");
 }
-getUser();
+insertTodaData();
