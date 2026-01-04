@@ -56,3 +56,14 @@ async function insertTodaData(user_id: Number, work: string, time: string, statu
     console.log("Todo added");
 }
 insertUserData("pranjal2", "pranjal@gmail.com", "123");
+
+
+//function to get users
+async function getUsers(email: string){
+    const query = "SELECT * FROM users WHERE email=$1"
+    const values = [email];
+    const result = await client.query(query, values);
+    console.log(result);
+    return result.rows[0];
+}
+getUsers("abhashdas@gmail.com");
