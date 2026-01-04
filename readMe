@@ -1,0 +1,10 @@
+steps to use ts, postgre
+1. Crate a folder
+2. npx tsc --init -> tsconfig.json
+3. npm init -> package.json
+4. Uncomment root.dir and dist.dir
+5. npm i pg & npm i @types/pg
+6. Create a src -> index.ts
+7. tsc -> for intitalising the .js file in dist folder
+8. node ./dist index.js
+9. Currently make changes in the package.json folder -> add "type": "module"
